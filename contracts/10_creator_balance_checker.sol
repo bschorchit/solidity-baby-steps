@@ -3,29 +3,30 @@
 	balance of its creator address. Note that the creatorbalance value captured in the constructor is a snapshot in time.
 	Later on, creator.balance will reflect whatever it is now.
 */
+pragma solidity ^0.4.26;
 
 contract creatorBalanceChecker {
 
     address creator;
     uint creatorbalance; 		// TIP: uint is an alias for uint256. Ditto int and int256.
 
-    function creatorBalanceChecker() public 
+    constructor() public 
     {
         creator = msg.sender; 								 // msg is a global variable
         creatorbalance = creator.balance;
     }
 
-    function getContractAddress() constant returns (address) 
+    function getContractAddress() public constant returns (address) 
     {
         return this;
     }
 	
-    function getCreatorBalance() constant returns (uint)     // Will return the creator's balance AT THE TIME THIS CONTRACT WAS CREATED
+    function getCreatorBalance() public constant returns (uint)     // Will return the creator's balance AT THE TIME THIS CONTRACT WAS CREATED
     {
         return creatorbalance;
     }
     
-    function getCreatorDotBalance() constant returns (uint)  // Will return creator's balance NOW
+    function getCreatorDotBalance() public constant returns (uint)  // Will return creator's balance NOW
     {
         return creator.balance;
     }
@@ -34,10 +35,10 @@ contract creatorBalanceChecker {
      Standard kill() function to recover funds 
      **********/
     
-    function kill()
+    function kill() public
     { 
         if (msg.sender == creator)
-            suicide(creator);  // kills this contract and sends remaining funds back to creator
+            selfdestruct(creator);  // kills this contract and sends remaining funds back to creator
     }
         
 }
